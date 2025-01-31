@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIP Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: hsl(0, 0%, 0%);
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 10vh;
+            background-color:  #006eff;
+            color: white;
+            text-align: center;
+            animation: fadeIn 1s;
+        }
+        .FDBlock {
+            width: 50%;
+            text-align: left;
+            margin: 20px auto;
+            background-color:  #4992f2;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .form-control {
+            margin-bottom: 10px;
+        }
+        label {
+            color: rgb(254, 251, 251);
+        }
+        button {
+            background-color: #006eff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: background-color 0.2s;
+            margin-top: 50px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">
+        <h1>SIP Calculator</h1>
+    </div>
+    <div class="FDBlock">
+        <form action="/SIP.html/Result_SIP.html" method="POST"> 
+
+            <label for="Investment">Investment (Monthly):</label>
+            <input type="number" class="form-control" id="Investment" name="Investment"><br>
+
+            <label for="tenure">tenure:</label>
+            <input type="number" class="form-control" id="tenure" name="tenure"><br>
+
+            <label for="Interest">Interest:</label>
+            <input type="number" class="form-control" id="Interest" name="Interest">
+
+            <button type="submit">Calculate</button>
+        </form>
+    </div>
+    {% if result_sip is not none %}
+    <h2 style="color: white;">
+        With a monthly investment of {{ Investment }} for {{ tenure }} years, the total returns are {{ amount_at_maturity }}, and the total investment made is {{ total_investment }}.
+    </h2>
+    {% endif %}
+</body>
+</html>
