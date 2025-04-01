@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+    environment {
+        IMAGE_NAME = 'flask-app'
+    }
+    stages {
+        stage('Git clone') {
+            steps {
+         git url : "https://github.com/MaheshbabuReddy/Web-based-Application-using-Flask.git"
+         , branch: 'main'
+        }
+        }
+        stage('Login') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', 
+                    usernameVariable: 'DOCKER_USERNAME', 
+                    passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+        stage('Tag and Push') {
+            steps {
+                sh 'docker tag $IMAGE_NAME $DOCKER_USERNAME/$IMAGE_NAME:$BUILD_NUMBER'
+                sh 'docker push $DOCKER_USERNAME/$IMAGE_NAME:$BUILD_NUMBER'
+            }
+        }
+        stage('Download') {
+            steps {
+                sh 'docker pull $DOCKER_USERNAME/$IMAGE_NAME:$BUILD_NUMBER'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'docker run -d -p 5000:5000 $DOCKER_USERNAME/$IMAGE_NAME:$BUILD_NUMBER'
+            }
+        }
+    }
+    post {
+        always {
+            sh 'docker logout' 
+        }
+    }
+}
