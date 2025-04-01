@@ -6,8 +6,7 @@ pipeline {
     stages {
         stage('Git clone') {
             steps {
-         git url : "https://github.com/MaheshbabuReddy/Web-based-Application-using-Flask.git"
-         , branch: 'main'
+         git url : "https://github.com/MaheshbabuReddy/Web-based-Application-using-Flask.git", branch: 'main'
         }
         }
         stage('Login') {
